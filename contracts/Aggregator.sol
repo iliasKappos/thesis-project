@@ -1,15 +1,14 @@
-
 pragma solidity ^0.5.0;
 
 contract aggregator{
     uint public N;
-    int[6][100] public l;
-    int [6][100] public z;
+    int[50][1000] public l;
+    int [50][1000] public z;
     int p=1;
-    int Pd=150000;
-    int [100] public h;
-    int[6][100] public x;
-    int[6][100] public y;
+    int Pd;
+    int [1000] public h;
+    int[50][1000] public x;
+    int[50][1000] public y;
     uint16 public k;
     int epsilon;
     address[] public whitelist;
@@ -18,9 +17,10 @@ contract aggregator{
     	bool public init;
 
 
-    constructor (address[] memory _whitelist,uint _N ,int _p) public{
+    constructor (address[] memory _whitelist,uint _N ,int _p, int _Pd) public{
     	p=_p;
     	N=_N;
+    	Pd=_Pd*1000;
     	whitelist=_whitelist;
     	resetWaiting();
     	problemSolved=false;
@@ -45,7 +45,7 @@ contract aggregator{
     			 y[0][i]=x[0][i];
     			 waiting[msg.sender]=false;
     	 }
-    	 else{revert();}
+    else{revert();}
     }
     else{revert();}
 
@@ -95,18 +95,20 @@ contract aggregator{
 
 
         //elegxoume an sugkliname
-        for(uint i=0; i<N; i++){
-            if(abs(x[k+1][i],y[k+1][i]) > epsilon) return;
-            if(abs(y[k+1][i],y[k][i]) > epsilon) return;
-        }
 
+        for(uint i=0; i<N; i++){
+            if(abs(x[k+1][i],y[k+1][i]) >epsilon) return;
+            if(abs(y[k+1][i],y[k][i]) >epsilon) return;
+        }
         problemSolved = true;
+
+
 
 
     }
 
     function abs(int a, int b) public pure returns (int){
-        if(a>b) return a-b;
+        if(a>=b) return a-b;
         return b-a;
     }
 
